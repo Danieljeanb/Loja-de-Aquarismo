@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="perfil-container" style="max-width: 1000px; margin: 40px auto; padding: 0 20px;">
+    <div class="perfil-header" style="background: white; padding: 30px; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 30px;">
+        <h2 style="color: var(--dark);"><i class="fa-solid fa-user-circle text-primary"></i> Minha Conta</h2>
+        <p style="color: var(--text-muted); margin-top: 5px;">Nome: <strong>{{ usuario.nome }}</strong> | E-mail: {{ usuario.email }}</p>
+    </div>
+
+    <div class="historico-card" style="background: white; padding: 30px; border-radius: 12px; box-shadow: var(--shadow);">
+        <h3 style="color: var(--dark); margin-bottom: 20px;"><i class="fa-solid fa-clock-rotate-left"></i> Histórico de Pedidos</h3>
+        
+        {% if not pedidos %}
+            <p style="color: var(--text-muted);">Você ainda não realizou compras em nossa plataforma.</p>
+        {% else %}
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #f1f5f9; color: var(--text-muted); font-size: 0.9rem;">
+                        <th style="padding: 12px 8px;">Nº do Pedido</th>
+                        <th style="padding: 12px 8px;">Data</th>
+                        <th style="padding: 12px 8px;">Total</th>
+                        <th style="padding: 12px 8px; text-align: center;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos %}
+                    <tr style="border-bottom: 1px solid #f1f5f9; font-size: 0.95rem;">
+                        <td style="padding: 16px 8px; font-weight: bold; color: var(--dark);">#000{{ pedido.id }}</td>
+                        <td style="padding: 16px 8px; color: var(--text-muted);">{{ pedido.data_pedido.strftime('%d/%m/%Y às %H:%M') }}</td>
+                        <td style="padding: 16px 8px; font-weight: 600;">R$ {{ "%.2f"|format(pedido.total) }}</td>
+                        <td style="padding: 16px 8px; text-align: center;">
+                            <a href="{{ url_for('gerar_pdf', pedido_id=pedido.id) }}" class="btn-pdf-tabela" style="background: #fee2e2; color: #ef4444; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">
+                                <i class="fa-solid fa-file-pdf"></i> PDF
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

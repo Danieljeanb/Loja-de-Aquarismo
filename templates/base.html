@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquarismo Pro</title>
+    
+    <!-- ✨ CORREÇÃO: Links oficiais e completos das CDNs para carregar ícones e fontes premium -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com" rel="stylesheet">
+    
+    <!-- Folha de estilo customizada da aplicação -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- ✨ CORREÇÃO: NAVBAR FLUTUANTE ÚNICA E INTELIGENTE -->
+    <nav class="navbar-flutuante">
+        <div class="logo">
+            <i class="fa-solid fa-fish-fins text-primary"></i> Aquarismo<span>Pro</span>
+        </div>
+        
+        <ul class="menu-links">
+            <li><a href="{{ url_for('index') }}"><i class="fa-solid fa-house"></i> Início</a></li>
+            <li><a href="{{ url_for('aquarios') }}"><i class="fa-solid fa-box"></i> Aquários</a></li>
+            <li><a href="{{ url_for('equipamentos') }}"><i class="fa-solid fa-gears"></i> Equipamentos</a></li>
+            <li><a href="{{ url_for('peixes') }}"><i class="fa-solid fa-fish"></i> Peixes</a></li>
+            <li><a href="{{ url_for('dicas') }}"><i class="fa-solid fa-lightbulb"></i> Dicas</a></li>
+            
+            <!-- Link do Administrador visível exclusivamente para funcionários logados -->
+            {% if session.get('user_role') == 'employee' %}
+                <li><a href="{{ url_for('admin') }}" class="admin-badge"><i class="fa-solid fa-lock"></i> Painel Admin</a></li>
+            {% endif %}
+        </ul>
+        
+        <div class="nav-btn" style="display: flex; align-items: center; gap: 15px;">
+            <!-- Ícone dinâmico do carrinho de compras com contador de itens -->
+            <a href="{{ url_for('visualizar_carrinho') }}" class="btn-carrinho-nav">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="cart-count">{{ session.get('carrinho', {})|length }}</span>
+            </a>
+
+            <!-- Bloco condicional unificado de Autenticação -->
+            {% if session.get('user_id') %}
+                <div class="user-menu-wrapper" style="display: flex; align-items: center; gap: 12px; font-size: 0.9rem;">
+                    <span style="color: var(--text-main);">Olá, <strong>{{ session.get('user_name').split()[0] }}</strong></span>
+                    
+                    <a href="{{ url_for('perfil') }}" style="color: var(--primary); text-decoration: none; font-weight: 600;" title="Acessar Perfil">
+                        <i class="fa-solid fa-user-gear"></i> Perfil
+                    </a>
+                    
+                    <a href="{{ url_for('logout') }}" style="color: #ef4444; text-decoration: none; font-weight: 600;" title="Encerrar Sessão">
+                        <i class="fa-solid fa-power-off"></i> Sair
+                    </a>
+                </div>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn-primary-sm" style="padding: 8px 16px; background: var(--primary); color: white; border-radius: 6px; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: inline-block;">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- ✨ ADIÇÃO ESSENCIAL: Sistema UI/UX de Alertas Flash para notificações do Banco de Dados -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash-alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- CONTEÚDO DINÂMICO INJETADO DAS OUTRAS PÁGINAS (INDEX, PEIXES, ETC) -->
+    <main class="content-wrapper">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- RODAPÉ CORPORATIVO PROFISSIONAL -->
+    <footer class="footer-profissional">
+        <div class="footer-content">
+            <p>&copy; 2026 Aquarismo Pro - Todos os direitos reservados.</p>
+            <div class="social-links">
+                <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
+

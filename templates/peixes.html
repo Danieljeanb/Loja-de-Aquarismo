@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- HEADER COM DESIGN PREMIUM -->
+<section class="peixes-hero">
+    <div class="hero-overlay">
+        <span class="badge-premium"><i class="fa-solid fa-certificate"></i> Espécies Selecionadas</span>
+        <h1>Peixes Ornamentais</h1>
+        <p>Descubra espécies incríveis para água doce e marinha. Trabalhamos com peixes saudáveis, aclimatados e ideais para aquaristas iniciantes e avançados.</p>
+    </div>
+</section>
+
+<!-- CONTAINER PRINCIPAL -->
+<section class="produtos-container">
+    
+    <!-- BARRA DE FILTROS (UI/UX MODERNA) -->
+    <div class="filtros-wrapper">
+        <div class="filtros-links">
+            <button class="filtro-btn active" onclick="filtrarCategoria('todos')">Todas as Categorias</button>
+            <button class="filtro-btn" onclick="filtrarCategoria('doce')">Água Doce</button>
+            <button class="filtro-btn" onclick="filtrarCategoria('fria')">Água Fria</button>
+            <button class="filtro-btn" onclick="filtrarCategoria('premium')">Premium</button>
+        </div>
+        <div class="busca-caixa">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="inputBusca" onkeyup="buscarPeixe()" placeholder="Buscar espécie...">
+        </div>
+    </div>
+
+    <!-- GRID DINÂMICA DE PRODUTOS (VINDOS DO MYSQL) -->
+    <div class="produtos-grid" id="gridPeixes">
+        {% if not peixes %}
+            <!-- Estado Vazio caso não tenha peixes cadastrados no banco -->
+            <div class="feedback-vazio">
+                <i class="fa-solid fa-fish-fins"></i>
+                <h3>Nenhum peixe cadastrado</h3>
+                <p>Acesse o Painel Admin para inserir os primeiros peixes ornamentais no banco de dados.</p>
+            </div>
+        {% else %}
+            {% for peixe in peixes %}
+            <div class="produto-card peixe-item {% if peixe.estoque == 0 %}esgotado-opacidade{% endif %}" data-nome="{{ peixe.nome.lower() }}">
+                
+                <!-- CONTAINER DA IMAGEM COM DISTINÇÃO DE ESTOQUE -->
+                <div class="produto-img-container">
+                    {% if peixe.estoque == 0 %}
+                        <span class="tarja-esgotado">Esgotado</span>
+                    {% endif %}
+                    
+                    {% if peixe.imagem == 'placeholder.jpg' or not peixe.imagem %}
+                        <div class="img-placeholder"><i class="fa-solid fa-fish"></i></div>
+                    {% else %}
+                        <img src="{{ url_for('static', filename='uploads/' + peixe.imagem) }}" alt="{{ peixe.nome }}" class="produto-foto-real">
+                    {% endif %}
+                </div>
+
+                <!-- DETALHES DO PRODUTO -->
+                <div class="produto-info">
+                    <div class="card-meta">
+                        <span class="avaliacao"><i class="fa-solid fa-star"></i> 5.0</span>
+                        <span class="status-estoque {% if peixe.estoque > 0 %}em-estoque{% else %}sem-estoque{% endif %}">
+                            {% if peixe.estoque > 0 %}
+                                <i class="fa-solid fa-circle-check"></i> {{ peixe.estoque }} un.
+                            {% else %}
+                                <i class="fa-solid fa-circle-xmark"></i> Indisponível
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <h3>{{ peixe.nome }}</h3>
+                    <p>{{ peixe.descricao }}</p>
+                    
+                    <!-- FOOTER DO CARD: PREÇO + INTEGRAÇÃO COM O CARRINHO -->
+                    <div class="produto-footer">
+                        <span class="preco">R$ {{ "%.2f"|format(peixe.preco) }}</span>
+                        
+                        {% if peixe.estoque > 0 %}
+                            <form action="{{ url_for('adicionar_carrinho', produto_id=peixe.id) }}" method="POST">
+                                <button type="submit" class="btn-comprar-pro">
+                                    Comprar <i class="fa-solid fa-cart-shopping"></i>
+                                </button>
+                            </form>
+                        {% else %}
+                            <button class="btn-indisponivel" disabled>Indisponível</button>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- FEEDBACK DE BUSCA FRUSTRADA (JAVASCRIPT) -->
+    <div id="buscaVazia" class="feedback-vazio" style="display: none; grid-column: 1/-1; margin-top: 40px;">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <h3>Nenhum peixe encontrado</h3>
+        <p>Tente digitar outro nome ou limpe a barra de pesquisa.</p>
+    </div>
+
+</section>
+
+<!-- SISTEMA AUXILIAR DE BUSCA EM TEMPO REAL (SEM DA REFRESH NA TELA) -->
+<script>
+function buscarPeixe() {
+    let input = document.getElementById('inputBusca').value.toLowerCase();
+    let itens = document.getElementsByClassName('peixe-item');
+    let grid = document.getElementById('gridPeixes');
+    let buscaVazia = document.getElementById('buscaVazia');
+    let encontrados = 0;
+
+    for (let i = 0; i < itens.length; i++) {
+        let nomePeixe = itens[i].getAttribute('data-nome');
+        if (nomePeixe.includes(input)) {
+            itens[i].style.display = "block";
+            encontrados++;
+        } else {
+            itens[i].style.display = "none";
+        }
+    }
+
+    if (encontrados === 0 && itens.length > 0) {
+        buscaVazia.style.display = "block";
+        if(grid) grid.style.display = "none";
+    } else {
+        buscaVazia.style.display = "none";
+        if(grid) grid.style.display = "grid";
+    }
+}
+
+function filtrarCategoria(cat) {
+    // Adiciona feedback visual de botão ativo
+    let botoes = document.getElementsByClassName('filtro-btn');
+    for (let btn of botoes) btn.classList.remove('active');
+    event.target.classList.add('active');
+    
+    // Alerte informativo de simulação para categorias complexas
+    if(cat !== 'todos') {
+        alert('Filtro por categoria "' + cat + '" acionado! Para produção, integre este parâmetro à sua rota SQL no Flask.');
+    }
+}
+</script>
+
+{% endblock %}

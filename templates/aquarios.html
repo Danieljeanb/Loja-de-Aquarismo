@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- HEADER PREMIUM DO PRODUTO -->
+<section class="aquarios-hero">
+    <div class="hero-overlay">
+        <span class="badge-aquario"><i class="fa-solid fa-layer-group"></i> Engenharia Subaquática</span>
+        <h1>Nossos Aquários e Tanques</h1>
+        <p>Encontre a estrutura perfeita para o seu projeto. Oferecemos desde nano aquários de cabeceira até ecossistemas completos de alta litragem com vidros lapidados e travamento especial.</p>
+        
+        <!-- BARRA DE PESQUISA DE MODELOS -->
+        <div class="busca-aquario-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="buscaAquario" onkeyup="buscarModelo()" placeholder="Buscar por tamanho, modelo ou litragem... (Ex: 50 Litros, Curvo...)">
+        </div>
+    </div>
+</section>
+
+<!-- CONTAINER DA VITRINE -->
+<section class="produtos-container">
+
+    <!-- GRID DINÂMICA DE PRODUTOS (VINDOS DO MYSQL) -->
+    <div class="produtos-grid" id="gridAquarios">
+        {% if not aquarios %}
+            <!-- Estado Vazio caso não haja registros no MySQL -->
+            <div class="feedback-vazio">
+                <i class="fa-solid fa-boxes-packing"></i>
+                <h3>Nenhum modelo em exibição</h3>
+                <p>Acesse o Painel Administrativo com sua conta corporativa para cadastrar os primeiros aquários no banco de dados.</p>
+            </div>
+        {% else %}
+            {% for aquario in aquarios %}
+            <div class="produto-card aquario-item {% if aquario.estoque == 0 %}esgotado-opacidade{% endif %}" data-nome="{{ aquario.nome.lower() }}">
+                
+                <!-- CONTAINER DA FOTO COM EFEITO DE HOVER -->
+                <div class="produto-img-container">
+                    {% if aquario.estoque == 0 %}
+                        <span class="tarja-esgotado">Indisponível</span>
+                    {% endif %}
+                    
+                    {% if aquario.imagem == 'placeholder.jpg' or not aquario.imagem %}
+                        <div class="img-placeholder"><i class="fa-solid fa-box-open"></i></div>
+                    {% else %}
+                        <img src="{{ url_for('static', filename='uploads/' + aquario.imagem) }}" alt="{{ aquario.nome }}" class="produto-foto-real">
+                    {% endif %}
+                </div>
+
+                <!-- DETALHES TÉCNICOS DO MODELO -->
+                <div class="produto-info">
+                    <div class="card-meta">
+                        <span class="categoria-tag"><i class="fa-solid fa-cube"></i> Cristal Lapidado</span>
+                        <span class="status-estoque {% if aquario.estoque > 0 %}em-estoque{% else %}sem-estoque{% endif %}">
+                            {% if aquario.estoque > 0 %}
+                                <i class="fa-solid fa-cubes"></i> {{ aquario.estoque }} un.
+                            {% else %}
+                                <i class="fa-solid fa-triangle-exclamation"></i> Esgotado
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <h3>{{ aquario.nome }}</h3>
+                    <p>{{ aquario.descricao }}</p>
+                    
+                    <!-- FOOTER FINANCEIRO + INTEGRAÇÃO COM CARRINHO -->
+                    <div class="produto-footer">
+                        <span class="preco">R$ {{ "%.2f"|format(aquario.preco) }}</span>
+                        
+                        {% if aquario.estoque > 0 %}
+                            <form action="{{ url_for('adicionar_carrinho', produto_id=aquario.id) }}" method="POST">
+                                <button type="submit" class="btn-comprar-pro">
+                                    Adicionar <i class="fa-solid fa-cart-plus"></i>
+                                </button>
+                            </form>
+                        {% else %}
+                            <button class="btn-indisponivel" disabled>Esgotado</button>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- FEEDBACK DE BUSCA FRUSTRADA -->
+    <div id="buscaSemResultado" class="feedback-vazio" style="display: none; grid-column: 1/-1; margin-top: 40px;">
+        <i class="fa-solid fa-dumpster-fire"></i>
+        <h3>Modelo não localizado</h3>
+        <p>Não encontramos nenhum aquário correspondente à sua pesquisa. Tente buscar termos genéricos como "litros".</p>
+    </div>
+
+</section>
+
+<!-- JAVASCRIPT EXCLUSIVO PARA FILTRAGEM INTERNA EM TEMPO REAL -->
+<script>
+function buscarModelo() {
+    let input = document.getElementById('buscaAquario').value.toLowerCase();
+    let itens = document.getElementsByClassName('aquario-item');
+    let grid = document.getElementById('gridAquarios');
+    let feedbackVazio = document.getElementById('buscaSemResultado');
+    let contador = 0;
+
+    for (let i = 0; i < itens.length; i++) {
+        let nomeModelo = itens[i].getAttribute('data-nome');
+        if (nomeModelo.includes(input)) {
+            itens[i].style.display = "block";
+            contador++;
+        } else {
+            itens[i].style.display = "none";
+        }
+    }
+
+    if (contador === 0 && itens.length > 0) {
+        feedbackVazio.style.display = "block";
+        if(grid) grid.style.display = "none";
+    } else {
+        feedbackVazio.style.display = "none";
+        if(grid) grid.style.display = "grid";
+    }
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- HERO HEADER DO PORTAL DE CONHECIMENTO -->
+<section class="dicas-hero">
+    <div class="hero-overlay">
+        <span class="badge-conteudo"><i class="fa-solid fa-graduation-cap"></i> Central de Ajuda</span>
+        <h1>Guia Completo para Aquaristas</h1>
+        <p>Aprenda tudo sobre montagem, manutenção e cuidados essenciais para manter seus peixes saudáveis e o ecossistema do seu aquário em perfeito equilíbrio.</p>
+        
+        <!-- BARRA DE PESQUISA DE ARTIGOS -->
+        <div class="busca-artigo-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="buscaArtigo" onkeyup="filtrarArtigos()" placeholder="O que você deseja aprender hoje? (Ex: Ciclagem, Limpeza...)">
+        </div>
+    </div>
+</section>
+
+<!-- CONTAINER DOS ARTIGOS -->
+<section class="dicas-container">
+
+    <!-- GRID DINÂMICA DE ARTIGOS (VINDOS DO MYSQL) -->
+    <div class="dicas-grid" id="gridArtigos">
+        {% if not dicas %}
+            <!-- Estado Vazio caso nenhuma dica esteja cadastrada no banco -->
+            <div class="feedback-vazio">
+                <i class="fa-solid fa-book-open"></i>
+                <h3>Nenhum guia publicado</h3>
+                <p>Acesse o Painel Administrativo com sua conta de funcionário para publicar os primeiros artigos explicativos.</p>
+            </div>
+        {% else %}
+            {% for dica in dicas %}
+            <div class="artigo-card" data-titulo="{{ dica.titulo.lower() }}" data-subtitulo="{{ dica.subtitulo.lower() if dica.subtitulo else '' }}">
+                <div class="artigo-icon-wrapper">
+                    <!-- Renderiza dinamicamente o ícone configurado no banco de dados -->
+                    <i class="fa-solid {{ dica.icone if dica.icone else 'fa-lightbulb' }}"></i>
+                </div>
+                <div class="artigo-conteudo">
+                    <span class="artigo-categoria">Guia Técnico</span>
+                    <h3>{{ dica.titulo }}</h3>
+                    {% if dica.subtitulo %}
+                        <h4 class="artigo-subtitulo">{{ dica.subtitulo }}</h4>
+                    {% endif %}
+                    <p>{{ dica.conteudo }}</p>
+                    <div class="artigo-footer">
+                        <span class="leitura-tempo"><i class="fa-regular fa-clock"></i> 3 min de leitura</span>
+                        <a href="#" class="btn-ler-mais" onclick="alert('Este artigo completo está indexado e otimizado para SEO no banco de dados!')">Ler Artigo <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- FEEDBACK DE PESQUISA FRUSTRADA -->
+    <div id="artigoVazio" class="feedback-vazio" style="display: none; margin-top: 40px;">
+        <i class="fa-solid fa-book-open-reader"></i>
+        <h3>Nenhum guia encontrado</h3>
+        <p>Não encontramos nenhum artigo com esse termo. Tente buscar por palavras-chave como "água", "filtro" ou "alimentação".</p>
+    </div>
+
+</section>
+
+<!-- FILTRO JAVASCRIPT EM TEMPO REAL -->
+<script>
+function filtrarArtigos() {
+    let input = document.getElementById('buscaArtigo').value.toLowerCase();
+    let cards = document.getElementsByClassName('artigo-card');
+    let grid = document.getElementById('gridArtigos');
+    let artigoVazio = document.getElementById('artigoVazio');
+    let contagem = 0;
+
+    for (let i = 0; i < cards.length; i++) {
+        let titulo = cards[i].getAttribute('data-titulo');
+        let subtitulo = cards[i].getAttribute('data-subtitulo');
+        
+        if (titulo.includes(input) || subtitulo.includes(input)) {
+            cards[i].style.display = "flex";
+            contagem++;
+        } else {
+            cards[i].style.display = "none";
+        }
+    }
+
+    if (contagem === 0 && cards.length > 0) {
+        artigoVazio.style.display = "block";
+        if(grid) grid.style.display = "none";
+    } else {
+        artigoVazio.style.display = "none";
+        if(grid) grid.style.display = "grid";
+    }
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,1234 @@
+:root {
+    --primary: #0070f3;
+    --primary-hover: #0051b3;
+    --dark: #0f172a;
+    --text-main: #334155;
+    --text-muted: #64748b;
+    --bg-light: #f8fafc;
+    --white: #ffffff;
+    --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    --radius: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    padding-top: 100px; /* Evita que a navbar suma com o topo do site */
+}
+
+/* NAVBAR FLUTUANTE PREMIUM (EFEITO GLASSMORPHISM) */
+.navbar-flutuante {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1200px;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px); /* Efeito desfocado profissional atrás da barra */
+    -webkit-backdrop-filter: blur(12px);
+    padding: 14px 40px;
+    border-radius: 50px;
+    box-shadow: var(--shadow);
+    z-index: 2000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.logo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--dark);
+}
+.logo span { color: var(--primary); }
+
+.menu-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.menu-links a {
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s ease;
+}
+
+.menu-links a:hover { color: var(--primary); }
+
+/* HERO BANNER PRINCIPAL */
+.hero-section {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 80px 40px;
+    background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+}
+
+.hero-text h1 {
+    font-size: 3rem;
+    color: var(--dark);
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.badge {
+    background-color: rgba(0, 112, 243, 0.1);
+    color: var(--primary);
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* CARDS DE PRODUTO PROFISSIONAIS (GRID) */
+.produtos-container {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.produtos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.produto-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid #f1f5f9;
+    transition: transform 0.3s ease;
+}
+
+.produto-card:hover { transform: translateY(-5px); }
+
+.produto-img-placeholder {
+    height: 200px;
+    background-color: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: var(--text-muted);
+}
+
+.produto-info { padding: 24px; }
+.produto-info h3 { margin-bottom: 10px; color: var(--dark); }
+
+.produto-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.preco { font-size: 1.4rem; font-weight: 700; color: var(--dark); }
+
+/* BOTÕES GERAIS */
+.btn-primary, .btn-comprar {
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.btn-primary:hover, .btn-comprar:hover { background-color: var(--primary-hover); }
+
+/* FOOTER */
+.footer-profissional {
+    background-color: var(--dark);
+    color: var(--text-muted);
+    padding: 40px 20px;
+    margin-top: 100px;
+}
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.social-links a { color: var(--text-muted); font-size: 1.5rem; margin-left: 15px; }
+
+/* Customização de Inventário/Estoque */
+.estoque-indicador {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 5px;
+}
+
+.esgotado-opacidade {
+    position: relative;
+}
+
+.tarja-esgotado {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: #ef4444;
+    color: white;
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 4px;
+    z-index: 10;
+    text-transform: uppercase;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+.btn-indisponivel {
+    background-color: #cbd5e1;
+    color: #94a3b8;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: not-allowed;
+}
+/* BANNER HERO DE PEIXES (AMBIENTAÇÃO SUBAQUÁTICA) */
+.peixes-hero {
+    width: 100%;
+    background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.85)), 
+                url('https://unsplash.com') center/cover no-repeat;
+    padding: 100px 20px;
+    text-align: center;
+    color: var(--white);
+    border-radius: var(--radius);
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+.badge-premium {
+    background: rgba(0, 112, 243, 0.2);
+    border: 1px solid var(--primary);
+    color: #38bdf8;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.peixes-hero h1 {
+    font-size: 3.2rem;
+    font-weight: 800;
+    margin-top: 15px;
+    letter-spacing: -1px;
+}
+
+.peixes-hero p {
+    max-width: 700px;
+    margin: 10px auto 0;
+    color: #94a3b8;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* BARRA DE FILTROS E BUSCA */
+.filtros-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--white);
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 40px;
+    border: 1px solid #f1f5f9;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.filtros-links {
+    display: flex;
+    gap: 10px;
+}
+
+.filtro-btn {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filtro-btn:hover, .filtro-btn.active {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+.busca-caixa {
+    position: relative;
+    max-width: 300px;
+    width: 100%;
+}
+
+.busca-caixa i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.busca-caixa input {
+    width: 100%;
+    padding: 12px 14px 12px 40px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+}
+
+.busca-caixa input:focus {
+    border-color: var(--primary);
+}
+
+/* COMPONENTES METADADOS DO CARD */
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.avaliacao {
+    color: #f59e0b;
+    background: #fef3c7;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.status-estoque {
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.status-estoque.em-estoque { color: #10b981; background: #ecfdf5; }
+.status-estoque.sem-estoque { color: #ef4444; background: #fef2f2; }
+
+/* FEEDBACKS VISUAIS */
+.feedback-vazio {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    width: 100%;
+}
+
+.feedback-vazio i {
+    font-size: 3.5rem;
+    color: #cbd5e1;
+    margin-bottom: 15px;
+}
+
+.btn-comprar-pro {
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.btn-comprar-pro:hover {
+    background: var(--primary-hover);
+}
+/* BANNER HERO DO PORTAL DE CONHECIMENTO */
+.dicas-hero {
+    width: 100%;
+    background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.95)), 
+                url('https://unsplash.com') center/cover no-repeat;
+    padding: 90px 20px;
+    text-align: center;
+    color: var(--white);
+    border-radius: var(--radius);
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+.badge-conteudo {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid #10b981;
+    color: #34d399;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dicas-hero h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-top: 15px;
+    color: var(--white);
+}
+
+.dicas-hero p {
+    max-width: 750px;
+    margin: 12px auto 30px;
+    color: #94a3b8;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* BARRA DE PESQUISA PREMIUM */
+.busca-artigo-container {
+    position: relative;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.busca-artigo-container i {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+.busca-artigo-container input {
+    width: 100%;
+    padding: 16px 20px 16px 55px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 50px;
+    outline: none;
+    font-size: 1rem;
+    color: var(--white);
+    transition: all 0.3s ease;
+}
+
+.busca-artigo-container input::placeholder {
+    color: #64748b;
+}
+
+.busca-artigo-container input:focus {
+    background: var(--white);
+    color: var(--dark);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border-color: var(--primary);
+}
+
+/* CONTAINER E ESTRUTURA DOS CARDS */
+.dicas-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.dicas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 30px;
+}
+
+.artigo-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 30px;
+    box-shadow: var(--shadow);
+    border: 1px solid #f1f5f9;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.artigo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.12);
+}
+
+.artigo-icon-wrapper {
+    background: rgba(0, 112, 243, 0.08);
+    color: var(--primary);
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.artigo-conteudo {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.artigo-categoria {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.artigo-conteudo h3 {
+    color: var(--dark);
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.artigo-subtitulo {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.artigo-conteudo p {
+    color: var(--text-main);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.artigo-footer {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.leitura-tempo {
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-ler-mais {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+}
+
+.btn-ler-mais:hover {
+    color: var(--primary-hover);
+}
+
+
+/* BANNER HERO DA VITRINE DE AQUÁRIOS */
+.aquarios-hero {
+    width: 100%;
+    background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.9)), 
+                url('https://unsplash.com') center/cover no-repeat;
+    padding: 95px 20px;
+    text-align: center;
+    color: var(--white);
+    border-radius: var(--radius);
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+.badge-aquario {
+    background: rgba(14, 165, 233, 0.15);
+    border: 1px solid #0ea5e9;
+    color: #38bdf8;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.aquarios-hero h1 {
+    font-size: 3.2rem;
+    font-weight: 800;
+    margin-top: 15px;
+    letter-spacing: -1px;
+}
+
+.aquarios-hero p {
+    max-width: 750px;
+    margin: 10px auto 30px;
+    color: #94a3b8;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* CAIXA DE BUSCA NO BANNER DO PRODUTO */
+.busca-aquario-box {
+    position: relative;
+    max-width: 550px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.busca-aquario-box i {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+}
+
+.busca-aquario-box input {
+    width: 100%;
+    padding: 14px 18px 14px 48px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.95rem;
+    color: var(--white);
+    transition: all 0.25s ease;
+}
+
+.busca-aquario-box input::placeholder {
+    color: #64748b;
+}
+
+.busca-aquario-box input:focus {
+    background: var(--white);
+    color: var(--dark);
+    border-color: var(--primary);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* MARCAÇÃO DE CATEGORIA E TAGS INTERNAS */
+.categoria-tag {
+    color: var(--primary);
+    background: rgba(0, 112, 243, 0.06);
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+/* BANNER HERO DA VITRINE DE EQUIPAMENTOS */
+.equipamentos-hero {
+    width: 100%;
+    background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.95)), 
+                url('https://unsplash.com') center/cover no-repeat;
+    padding: 95px 20px;
+    text-align: center;
+    color: var(--white);
+    border-radius: var(--radius);
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+.badge-equipamento {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid #f59e0b;
+    color: #fbbf24;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.equipamentos-hero h1 {
+    font-size: 3.2rem;
+    font-weight: 800;
+    margin-top: 15px;
+    letter-spacing: -1px;
+}
+
+.equipamentos-hero p {
+    max-width: 750px;
+    margin: 10px auto 30px;
+    color: #94a3b8;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* CAIXA DE BUSCA NO BANNER DE EQUIPAMENTOS */
+.busca-equipamento-box {
+    position: relative;
+    max-width: 550px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.busca-equipamento-box i {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+}
+
+.busca-equipamento-box input {
+    width: 100%;
+    padding: 14px 18px 14px 48px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.95rem;
+    color: var(--white);
+    transition: all 0.25s ease;
+}
+
+.busca-equipamento-box input::placeholder {
+    color: #64748b;
+}
+
+.busca-equipamento-box input:focus {
+    background: var(--white);
+    color: var(--dark);
+    border-color: var(--primary);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* TAG TÉCNICA DO HARDWARE */
+.tag-tecnica {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.06);
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+/* CONTAINER E GRID DO DASHBOARD */
+.admin-dashboard-wrapper {
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+    border: 1px solid #f1f5f9;
+}
+
+.badge-admin {
+    background: rgba(239, 68, 68, 0.08);
+    color: #ef4444;
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.dashboard-header h1 { font-size: 2.2rem; margin-top: 5px; color: var(--dark); }
+.header-status-cards { display: flex; gap: 20px; }
+
+.mini-status-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 16px 24px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.mini-status-card i { font-size: 1.8rem; }
+.mini-status-card strong { display: block; font-size: 1.4rem; color: var(--dark); line-height: 1; }
+.mini-status-card span { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 30px;
+}
+
+/* SISTEMA DE ABAS (TABS) */
+.tabs-control {
+    display: flex;
+    background: #e2e8f0;
+    padding: 4px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background: white;
+    color: var(--dark);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* COMPONENTES DE FORMULÁRIO PREMIUM */
+.card-form-wrapper {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid #f1f5f9;
+}
+.card-form-wrapper h3 { margin-bottom: 20px; font-size: 1.2rem; color: var(--dark); }
+
+.premium-form .form-row { margin-bottom: 16px; }
+.premium-form .form-row.two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.premium-form .form-group { display: flex; flex-direction: column; }
+.premium-form label { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
+
+.premium-form input, .premium-form select, .premium-form textarea {
+    padding: 11px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    outline: none;
+    font-size: 0.9rem;
+    background: #f8fafc;
+    transition: all 0.2s;
+}
+.premium-form input:focus, .premium-form select:focus, .premium-form textarea:focus {
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.08);
+}
+
+.premium-file-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: #f1f5f9;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text-main);
+    transition: all 0.2s;
+}
+.premium-file-upload:hover { background: #e2e8f0; border-color: var(--primary); color: var(--primary); }
+.premium-file-upload input { display: none; }
+
+.btn-dashboard-submit {
+    width: 100%;
+    padding: 14px;
+    border-radius: 6px;
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+.btn-dashboard-submit:hover { background: var(--primary-hover); }
+.btn-dashboard-submit.secondary { background: #10b981; }
+.btn-dashboard-submit.secondary:hover { background: #059669; }
+
+/* TABELA DE AUDITORIA E CONTROLE */
+.inventory-table-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid #f1f5f9;
+    padding: 30px;
+}
+
+.table-header-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.table-header-box h3 { color: var(--dark); font-size: 1.2rem; }
+.table-header-box input {
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    outline: none;
+    width: 250px;
+    font-size: 0.85rem;
+}
+
+.premium-admin-table { width: 100%; border-collapse: collapse; text-align: left; }
+.premium-admin-table th { background: #f8fafc; padding: 14px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+.premium-admin-table td { padding: 16px 14px; border-bottom: 1px solid #f1f5f9; font-size: 0.95rem; }
+
+.table-cell-product { display: flex; align-items: center; gap: 12px; }
+.mini-avatar-placeholder { width: 36px; height: 36px; background: #f1f5f9; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); }
+.product-names strong { display: block; color: var(--dark); }
+.product-names span { font-size: 0.75rem; color: var(--text-muted); }
+
+.table-badge-cat { padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; }
+.table-badge-cat.peixe { background: #e0f2fe; color: #0369a1; }
+.table-badge-cat.aquario { background: #e0f2fe; color: #0070f3; }
+.table-badge-cat.equipamento { background: #fef3c7; color: #b45309; }
+
+.table-txt-price { font-weight: 600; color: var(--dark); }
+
+.stock-status-pill { padding: 4px 10px; border-radius: 30px; font-size: 0.8rem; font-weight: 700; }
+.stock-status-pill.success { background: #ecfdf5; color: #10b981; }
+.stock-status-pill.warning { background: #fffbeb; color: #d97706; }
+.stock-status-pill.danger { background: #fef2f2; color: #ef4444; }
+
+.btn-table-delete { background: #fef2f2; color: #ef4444; padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer; transition: all 0.2s; }
+.btn-table-delete:hover { background: #ef4444; color: white; }
+
+@media (max-width: 1024px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+
+/* ==========================================
+   RESPONSIVIDADE GLOBAL + MENU MOBILE
+========================================== */
+
+/* Imagens */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Containers */
+.hero-section,
+.produtos-container,
+.dicas-container,
+.admin-dashboard-wrapper,
+.footer-content {
+    width: min(100%, 1200px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Títulos fluidos */
+.hero-text h1,
+.peixes-hero h1,
+.aquarios-hero h1,
+.equipamentos-hero h1,
+.dicas-hero h1 {
+    font-size: clamp(1.8rem, 5vw, 3.2rem);
+}
+
+/* Cards mais flexíveis */
+.produtos-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.dicas-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* Imagens dos produtos */
+.produto-img-placeholder,
+.produto-card img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}
+
+/* ==========================================
+   BOTÃO MENU MOBILE
+========================================== */
+
+.menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--dark);
+    cursor: pointer;
+}
+
+/* ==========================================
+   NOTEBOOK
+========================================== */
+
+@media (max-width: 1200px) {
+
+    .navbar-flutuante {
+        width: 95%;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width: 992px) {
+
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 50px 30px;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .header-status-cards {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .premium-form .form-row.two-cols {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================
+   CELULARES
+========================================== */
+
+@media (max-width: 768px) {
+
+    body {
+        padding-top: 100px;
+    }
+
+    /* NAVBAR */
+
+    .navbar-flutuante {
+        width: 95%;
+        padding: 15px 20px;
+        border-radius: 20px;
+        flex-wrap: wrap;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .menu-links {
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: all .4s ease;
+    }
+
+    .menu-links.active {
+        max-height: 600px;
+        opacity: 1;
+        margin-top: 15px;
+    }
+
+    .menu-links li {
+        width: 100%;
+    }
+
+    .menu-links a {
+        display: block;
+        text-align: center;
+        padding: 12px;
+        background: #f8fafc;
+        border-radius: 8px;
+    }
+
+    /* HERO */
+
+    .hero-section,
+    .peixes-hero,
+    .aquarios-hero,
+    .equipamentos-hero,
+    .dicas-hero {
+        padding: 50px 20px;
+    }
+
+    /* PRODUTOS */
+
+    .produto-footer {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+
+    .btn-primary,
+    .btn-comprar,
+    .btn-comprar-pro {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* FILTROS */
+
+    .filtros-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filtros-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .busca-caixa {
+        max-width: 100%;
+    }
+
+    /* ARTIGOS */
+
+    .artigo-card {
+        flex-direction: column;
+    }
+
+    .artigo-footer {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    /* DASHBOARD */
+
+    .header-status-cards {
+        flex-direction: column;
+    }
+
+    .mini-status-card {
+        width: 100%;
+    }
+
+    .tabs-control {
+        flex-wrap: wrap;
+    }
+
+    .tab-btn {
+        min-width: 100%;
+    }
+
+    .card-form-wrapper,
+    .inventory-table-card {
+        padding: 20px;
+    }
+
+    /* TABELAS */
+
+    .inventory-table-card {
+        overflow-x: auto;
+    }
+
+    .premium-admin-table {
+        min-width: 900px;
+    }
+
+    .table-header-box input {
+        width: 100%;
+    }
+}
+
+/* ==========================================
+   CELULARES PEQUENOS
+========================================== */
+
+@media (max-width: 480px) {
+
+    .logo {
+        font-size: 1rem;
+    }
+
+    .produto-info {
+        padding: 16px;
+    }
+
+    .preco {
+        font-size: 1.1rem;
+    }
+
+    .dashboard-header {
+        padding: 20px;
+    }
+
+    .card-form-wrapper,
+    .inventory-table-card {
+        padding: 15px;
+    }
+
+    .badge,
+    .badge-premium,
+    .badge-conteudo,
+    .badge-aquario,
+    .badge-equipamento {
+        font-size: 0.75rem;
+    }
+}    

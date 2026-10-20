@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- HERO BANNER PRINCIPAL COM ANIMAÇÃO VISUAL -->
+<section class="hero-section">
+    <div class="hero-text">
+        <span class="badge"><i class="fa-solid fa-gem"></i> Nível Profissional</span>
+        <h1>Seu ecossistema subaquático começa aqui</h1>
+        <p>Tudo o que você precisa para planejar, montar e manter seu aquário perfeito com suporte especializado e produtos certificados de alta qualidade.</p>
+        
+        <!-- BOTÕES DE AÇÃO COM ÍCONES VISUAIS -->
+        <div class="hero-buttons">
+            <a href="{{ url_for('aquarios') }}" class="btn-primary">
+                <i class="fa-solid fa-aquarium"></i> Explorar Aquários
+            </a>
+            <a href="{{ url_for('dicas') }}" class="btn-secondary">
+                <i class="fa-solid fa-book-open"></i> Central de Guias
+            </a>
+        </div>
+
+        <!-- INDICADORES DE CREDIBILIDADE (PROVA SOCIAL) -->
+        <div class="hero-stats">
+            <div class="stat-item">
+                <strong>+50</strong>
+                <span>Espécies de Peixes</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <strong>100%</strong>
+                <span>Estoque Controlado</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <strong>24/7</strong>
+                <span>Suporte Técnico</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SEÇÃO AUXILIAR: DIFERENCIAIS DA PLATAFORMA (UI/UX PREMIUM) -->
+<section class="diferenciais-container" style="max-width: 1200px; margin: -20px auto 60px; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+    <div class="diferencial-card" style="background: white; padding: 25px; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid #f1f5f9; display: flex; align-items: center; gap: 15px;">
+        <div style="background: rgba(0, 112, 243, 0.08); color: var(--primary); width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;">
+            <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <div>
+            <h4 style="color: var(--dark); font-weight: 700; margin-bottom: 2px;">Envio Seguro</h4>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Embalagens térmicas especiais para a saúde da fauna.</p>
+        </div>
+    </div>
+
+    <div class="diferencial-card" style="background: white; padding: 25px; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid #f1f5f9; display: flex; align-items: center; gap: 15px;">
+        <div style="background: rgba(16, 185, 129, 0.08); color: #10b981; width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div>
+            <h4 style="color: var(--dark); font-weight: 700; margin-bottom: 2px;">Garantia de Origem</h4>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Equipamentos originais mapeados diretamente no MySQL.</p>
+        </div>
+    </div>
+
+    <div class="diferencial-card" style="background: white; padding: 25px; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid #f1f5f9; display: flex; align-items: center; gap: 15px;">
+        <div style="background: rgba(245, 158, 11, 0.08); color: #f59e0b; width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;">
+            <i class="fa-solid fa-comments"></i>
+        </div>
+        <div>
+            <h4 style="color: var(--dark); font-weight: 700; margin-bottom: 2px;">Direto ao WhatsApp</h4>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Feche seu carrinho e fale direto com o especialista.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

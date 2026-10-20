@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- HEADER PREMIUM DE EQUIPAMENTOS -->
+<section class="equipamentos-hero">
+    <div class="hero-overlay">
+        <span class="badge-equipamento"><i class="fa-solid fa-microchip"></i> Tecnologia de Ponta</span>
+        <h1>Equipamentos e Acessórios</h1>
+        <p>Garanta a estabilidade biológica e térmica do seu aquário. Trabalhamos com filtros canister de alta performance, luminárias LED programáveis para plantados e termostatos digitais de alta precisão.</p>
+        
+        <!-- BARRA DE PESQUISA DE EQUIPAMENTOS -->
+        <div class="busca-equipamento-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="buscaEquipamento" onkeyup="buscarEquipamento()" placeholder="Buscar por filtro, termostato, luminária, marca... (Ex: Canister, LED...)">
+        </div>
+    </div>
+</section>
+
+<!-- CONTAINER DA VITRINE -->
+<section class="produtos-container">
+
+    <!-- GRID DINÂMICA DE PRODUTOS (VINDOS DO MYSQL) -->
+    <div class="produtos-grid" id="gridEquipamentos">
+        {% if not equipamentos %}
+            <!-- Estado Vazio caso não haja registros no MySQL -->
+            <div class="feedback-vazio">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <h3>Nenhum equipamento catalogado</h3>
+                <p>Acesse o Painel Administrativo com sua conta corporativa para cadastrar os primeiros equipamentos no banco de dados.</p>
+            </div>
+        {% else %}
+            {% for equipamento in equipamentos %}
+            <div class="produto-card equipamento-item {% if equipamento.estoque == 0 %}esgotado-opacidade{% endif %}" data-nome="{{ equipamento.nome.lower() }}">
+                
+                <!-- CONTAINER DA FOTO COM TRATAMENTO DE ESTOQUE -->
+                <div class="produto-img-container">
+                    {% if equipamento.estoque == 0 %}
+                        <span class="tarja-esgotado">Esgotado</span>
+                    {% endif %}
+                    
+                    {% if equipamento.imagem == 'placeholder.jpg' or not equipamento.imagem %}
+                        <div class="img-placeholder"><i class="fa-solid fa-gears"></i></div>
+                    {% else %}
+                        <img src="{{ url_for('static', filename='uploads/' + equipamento.imagem) }}" alt="{{ equipamento.nome }}" class="produto-foto-real">
+                    {% endif %}
+                </div>
+
+                <!-- DETALHES TÉCNICOS DO EQUIPAMENTO -->
+                <div class="produto-info">
+                    <div class="card-meta">
+                        <span class="tag-tecnica"><i class="fa-solid fa-bolt"></i> Eficiência Energética</span>
+                        <span class="status-estoque {% if equipamento.estoque > 0 %}em-estoque{% else %}sem-estoque{% endif %}">
+                            {% if equipamento.estoque > 0 %}
+                                <i class="fa-solid fa-warehouse"></i> {{ equipamento.estoque }} un.
+                            {% else %}
+                                <i class="fa-solid fa-circle-xmark"></i> Indisponível
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <h3>{{ equipamento.nome }}</h3>
+                    <p>{{ equipamento.descricao }}</p>
+                    
+                    <!-- FOOTER FINANCEIRO + INTEGRAÇÃO COM CARRINHO -->
+                    <div class="produto-footer">
+                        <span class="preco">R$ {{ "%.2f"|format(equipamento.preco) }}</span>
+                        
+                        {% if equipamento.estoque > 0 %}
+                            <form action="{{ url_for('adicionar_carrinho', produto_id=equipamento.id) }}" method="POST">
+                                <button type="submit" class="btn-comprar-pro">
+                                    Adicionar <i class="fa-solid fa-cart-plus"></i>
+                                </button>
+                            </form>
+                        {% else %}
+                            <button class="btn-indisponivel" disabled>Indisponível</button>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- FEEDBACK DE BUSCA FRUSTRADA -->
+    <div id="buscaSemResultado" class="feedback-vazio" style="display: none; grid-column: 1/-1; margin-top: 40px;">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <h3>Nenhum hardware encontrado</h3>
+        <p>Não encontramos nenhum equipamento correspondente ao termo digitado. Tente palavras simples como "filtro" ou "led".</p>
+    </div>
+
+</section>
+
+<!-- JAVASCRIPT EXCLUSIVO PARA FILTRAGEM INTERNA EM TEMPO REAL -->
+<script>
+function buscarEquipamento() {
+    let input = document.getElementById('buscaEquipamento').value.toLowerCase();
+    let itens = document.getElementsByClassName('equipamento-item');
+    let grid = document.getElementById('gridEquipamentos');
+    let feedbackVazio = document.getElementById('buscaSemResultado');
+    let contador = 0;
+
+    for (let i = 0; i < itens.length; i++) {
+        let nomeEquipamento = itens[i].getAttribute('data-nome');
+        if (nomeEquipamento.includes(input)) {
+            itens[i].style.display = "block";
+            contador++;
+        } else {
+            itens[i].style.display = "none";
+        }
+    }
+
+    if (contador === 0 && itens.length > 0) {
+        feedbackVazio.style.display = "block";
+        if(grid) grid.style.display = "none";
+    } else {
+        feedbackVazio.style.display = "none";
+        if(grid) grid.style.display = "grid";
+    }
+}
+</script>
+
+{% endblock %}

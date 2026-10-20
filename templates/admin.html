@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="admin-dashboard-wrapper">
+    
+    <!-- CABEÇALHO DO DASHBOARD -->
+    <header class="dashboard-header">
+        <div class="header-info">
+            <span class="badge-admin"><i class="fa-solid fa-shield-halved"></i> Modo Administrativo</span>
+            <h1>Painel de Controle Corporativo</h1>
+            <p>Gerencie o inventário de peixes, aquários, hardwares técnicos e publique artigos no portal de conhecimento.</p>
+        </div>
+        <div class="header-status-cards">
+            <div class="mini-status-card">
+                <i class="fa-solid fa-boxes-stacked text-primary"></i>
+                <div>
+                    <strong>{{ produtos|length }}</strong>
+                    <span>Itens Cadastrados</span>
+                </div>
+            </div>
+            <div class="mini-status-card">
+                <i class="fa-solid fa-lightbulb text-warning"></i>
+                <div>
+                    <strong>{{ dicas|length }}</strong>
+                    <span>Guias Ativos</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- GRID PRINCIPAL DO DASHBOARD -->
+    <div class="dashboard-grid">
+        
+        <!-- COLUNA ESQUERDA: FORMULÁRIOS DE CADASTRO -->
+        <div class="dashboard-sidebar">
+            
+            <!-- ABAS SELETORES (UI/UX MODERNA) -->
+            <div class="tabs-control">
+                <button class="tab-btn active" onclick="alternarForm(event, 'form-produto')">
+                    <i class="fa-solid fa-box-open"></i> Novo Produto
+                </button>
+                <button class="tab-btn" onclick="alternarForm(event, 'form-dica')">
+                    <i class="fa-solid fa-pen-to-square"></i> Novo Artigo / Dica
+                </button>
+            </div>
+
+            <!-- FORMULÁRIO DE PRODUTO -->
+            <div id="form-produto" class="tab-content active">
+                <div class="card-form-wrapper">
+                    <h3>Catalogar Novo Item no MySQL</h3>
+                    <form action="{{ url_for('admin') }}" method="POST" enctype="multipart/form-data" class="premium-form">
+                        <input type="hidden" name="acao" value="produto">
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nome"><i class="fa-solid fa-tag"></i> Nome Comercial</label>
+                                <input type="text" id="nome" name="nome" required placeholder="Ex: Filtro Canister X-200">
+                            </div>
+                        </div>
+
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label for="categoria"><i class="fa-solid fa-layer-group"></i> Categoria Base</label>
+                                <select id="categoria" name="categoria" required onchange="atualizarSubcategorias()">
+                                    <option value="equipamento">Equipamento / Hardware</option>
+                                    <option value="aquario">Aquário / Tanque</option>
+                                    <option value="peixe">Peixe Ornamental</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="subcategoria"><i class="fa-solid fa-tags"></i> Subcategoria (Filtro)</label>
+                                <select id="subcategoria" name="subcategoria">
+                                    <option value="geral">Geral / Padrão</option>
+                                    <option value="doce">Água Doce</option>
+                                    <option value="fria">Água Fria</option>
+                                    <option value="premium">Premium Exótico</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label for="preco"><i class="fa-solid fa-hand-holding-dollar"></i> Preço de Venda (R$)</label>
+                                <input type="number" id="preco" name="preco" step="0.01" min="0.01" required placeholder="0.00">
+                            </div>
+                            <div class="form-group">
+                                <label for="estoque"><i class="fa-solid fa-warehouse"></i> Estoque Inicial</label>
+                                <input type="number" id="estoque" name="estoque" min="0" required placeholder="10">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="descricao"><i class="fa-solid fa-align-left"></i> Descrição Técnica / Detalhes</label>
+                                <textarea id="descricao" name="descricao" rows="3" required placeholder="Insira as especificações técnicas, litragem, cuidados ou compatibilidade..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="premium-file-upload">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <span>Selecionar Imagem Real do Produto</span>
+                                <input type="file" name="imagem" accept="image/*">
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-dashboard-submit"><i class="fa-solid fa-circle-check"></i> Salvar no Banco de Dados</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- FORMULÁRIO DE DICA -->
+            <div id="form-dica" class="tab-content">
+                <div class="card-form-wrapper">
+                    <h3>Publicar Novo Artigo Técnico</h3>
+                    <form action="{{ url_for('admin') }}" method="POST" class="premium-form">
+                        <input type="hidden" name="acao" value="dica">
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="titulo"><i class="fa-solid fa-heading"></i> Título Principal</label>
+                                <input type="text" id="titulo" name="titulo" required placeholder="Ex: Controle de Parâmetros de PH">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="subtitulo"><i class="fa-solid fa-pen-fancy"></i> Subtítulo / Resumo Curto</label>
+                                <input type="text" id="subtitulo" name="subtitulo" placeholder="Ex: Como evitar variações bruscas na água">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="icone"><i class="fa-solid fa-icons"></i> Ícone do FontAwesome</label>
+                                <input type="text" id="icone" name="icone" placeholder="Ex: fa-droplet, fa-temperature-high, fa-fish">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="conteudo"><i class="fa-solid fa-book-open"></i> Conteúdo Explicativo</label>
+                                <textarea id="conteudo" name="conteudo" rows="4" required placeholder="Escreva as instruções técnicas e dicas para o aquarista passo a passo..."></textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-dashboard-submit secondary"><i class="fa-solid fa-paper-plane"></i> Publicar Conteúdo Técnico</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COLUNA DIREITA: GERENCIADOR VISUAL DE INVENTÁRIO -->
+        <div class="dashboard-main-content">
+            <div class="inventory-table-card">
+                <div class="table-header-box">
+                    <h3><i class="fa-solid fa-list-check"></i> Auditoria de Estoque em Tempo Real</h3>
+                    <input type="text" id="filtroTabela" onkeyup="filtrarTabelaAdmin()" placeholder="Filtrar tabela por nome...">
+                </div>
+                
+                <div class="table-responsive-wrapper">
+                    <table class="premium-admin-table" id="tabelaProdutosAdmin">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Categoria</th>
+                                <th>Preço</th>
+                                <th>Estoque</th>
+                                <th style="text-align: center;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for produto in produtos %}
+                            <tr class="linha-produto-admin" data-nome="{{ produto.nome.lower() }}">
+                                <td>
+                                    <div class="table-cell-product">
+                                        <div class="mini-avatar-placeholder">
+                                            <i class="fa-solid {% if produto.categoria == 'peixe' %}fa-fish{% elif produto.categoria == 'aquario' %}fa-cube{% else %}fa-gears{% endif %}"></i>
+                                        </div>
+                                        <div class="product-names">
+{{ produto.nome }}
+Sub: {{ produto.subcategoria }}
+
+
+{{ produto.categoria.upper() }}
+R$ {{ "%.2f"|format(produto.preco) }}
+{% if produto.estoque > 5 %}
+{% elif produto.estoque > 0 %}
+{% else %}
+{% endif %}
+{% endfor %}
+
+
+
+
+function alternarForm(evt, formId) {
+let tabcontents = document.getElementsByClassName("tab-content");
+for (let i = 0; i < tabcontents.length; i++) {
+tabcontents[i].classList.remove("active");
+}
+let tablinks = document.getElementsByClassName("tab-btn");
+for (let i = 0; i < tablinks.length; i++) {
+tablinks[i].classList.remove("active");
+}
+document.getElementById(formId).classList.add("active");
+evt.currentTarget.classList.add("active");
+}
+function filtrarTabelaAdmin() {
+let input = document.getElementById("filtroTabela").value.toLowerCase();
+let rows = document.getElementsByClassName("linha-produto-admin");
+for (let i = 0; i < rows.length; i++) {
+let nome = rows[i].getAttribute("data-nome");
+rows[i].style.display = nome.includes(input) ? "" : "none";
+}
+}
+function atualizarSubcategorias() {
+let cat = document.getElementById("categoria").value;
+let subSelect = document.getElementById("subcategoria");
+// Altera opções visuais se for peixe para facilitar a organização
+if (cat === 'peixe') {
+subSelect.innerHTML = <option value="doce">Água Doce</option> <option value="fria">Água Fria</option> <option value="premium">Premium Exótico</option>;
+} else {
+subSelect.innerHTML = <option value="geral">Geral / Padrão</option> <option value="filtragem">Sistemas de Filtragem</option> <option value="iluminacao">Iluminação / LED</option>;
+}
+}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth-wrapper" style="max-width: 450px; margin: 80px auto; padding: 20px;">
+    <div class="auth-card" style="background: white; padding: 40px; border-radius: 16px; box-shadow: var(--shadow);">
+        <h2 style="color: var(--dark); text-align: center; margin-bottom: 10px;">Esqueceu a Senha?</h2>
+        <p style="color: var(--text-muted); text-align: center; font-size: 0.9rem; margin-bottom: 25px;">Insira seu e-mail cadastrado para enviarmos um token de segurança de redefinição.</p>
+        
+        <form action="{{ url_for('recuperar_senha') }}" method="POST">
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">E-mail Cadastrado</label>
+                <input type="email" name="email" required placeholder="seu@email.com" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; outline: none;">
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 14px; border-radius: 8px; font-weight: bold; border: none; cursor: pointer;">Enviar Token de Segurança</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
